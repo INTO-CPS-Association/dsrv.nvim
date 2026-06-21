@@ -1,6 +1,6 @@
 # dsrv.nvim
 
-Neovim language support for DSRV, intended to mirror the core features of the Zed extension in this repository.
+Neovim language support for DSRV, intended to mirror the core features of the DSRV editor extensions.
 
 ## Features
 
@@ -21,11 +21,10 @@ Neovim language support for DSRV, intended to mirror the core features of the Ze
 - Optional: [`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter) for tree-sitter highlighting
 - Optional: `trustworthiness_checker` available on `PATH` for run commands
 
-Build and install the LSP from the repository root:
+Install the LSP from its repository, or build it from source:
 
 ```sh
-cargo build --release -p DSRV-lsp
-cp target/release/dsrv-lsp ~/.local/bin/dsrv-lsp
+cargo install --git https://github.com/INTO-CPS-Association/dsrv-lsp.git --locked
 ```
 
 Make sure `~/.local/bin` is on your `PATH` before starting Neovim.
@@ -36,7 +35,7 @@ Make sure `~/.local/bin` is on your `PATH` before starting Neovim.
 
 ```lua
 {
-  dir = "/home/au759518/Documents/Research/Repositories/dsrv.nvim",
+  "INTO-CPS-Association/dsrv.nvim",
   ft = "dsrv",
   config = function()
     require("dsrv").setup({
@@ -55,7 +54,7 @@ Make sure `~/.local/bin` is on your `PATH` before starting Neovim.
 
 ```lua
 use {
-  "/home/au759518/Documents/Research/Repositories/dsrv.nvim",
+  "INTO-CPS-Association/dsrv.nvim",
   config = function()
     require("dsrv").setup()
   end,
@@ -66,7 +65,7 @@ use {
 
 ```sh
 mkdir -p ~/.local/share/nvim/site/pack/dsrv/start
-ln -s /home/au759518/Documents/Research/Repositories/dsrv.nvim \
+git clone https://github.com/INTO-CPS-Association/dsrv.nvim.git \
   ~/.local/share/nvim/site/pack/dsrv/start/dsrv.nvim
 ```
 
@@ -74,7 +73,7 @@ Then restart Neovim.
 
 ## Tree-sitter setup
 
-The plugin registers the DSRV parser with `nvim-treesitter` if `nvim-treesitter` is installed. In this split repository layout it defaults to the sibling `../tree-sitter-dsrv` directory.
+The plugin registers the DSRV parser with `nvim-treesitter` if `nvim-treesitter` is installed. By default it uses `https://github.com/INTO-CPS-Association/tree-sitter-dsrv.git`.
 
 After installing the plugin, run:
 
@@ -86,12 +85,12 @@ Then open `*.dsrv` files. The plugin also calls `vim.treesitter.start()` for DSR
 
 If tree-sitter is unavailable or the parser is not installed, Neovim falls back to `syntax/dsrv.vim`.
 
-To use a published grammar repository instead of the sibling local checkout:
+To use a local grammar checkout or fork instead of the default published grammar repository:
 
 ```lua
 require("dsrv").setup({
   treesitter = {
-    parser_url = "https://github.com/YOUR_ORG/tree-sitter-dsrv",
+    parser_url = "/path/to/tree-sitter-dsrv",
   },
 })
 ```
@@ -110,7 +109,7 @@ require("dsrv").setup({
   treesitter = {
     enable = true,
     register_parser = true,
-    parser_url = nil, -- defaults to ../tree-sitter-dsrv relative to this plugin
+    parser_url = nil, -- defaults to https://github.com/INTO-CPS-Association/tree-sitter-dsrv.git
   },
   runner = {
     checker_cmd = "trustworthiness_checker",

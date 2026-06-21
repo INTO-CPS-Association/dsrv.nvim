@@ -144,7 +144,7 @@ function M.register_treesitter_parser()
   end
 
   local parser_config = parsers.get_parser_configs()
-  local parser_url = M.config.treesitter.parser_url or joinpath(plugin_root(), "..", "tree-sitter-dsrv")
+  local parser_url = M.config.treesitter.parser_url or "https://github.com/INTO-CPS-Association/tree-sitter-dsrv.git"
   parser_config.dsrv = parser_config.dsrv or {}
   parser_config.dsrv.install_info = {
     url = parser_url,
