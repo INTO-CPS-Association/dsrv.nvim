@@ -36,7 +36,7 @@ Make sure `~/.local/bin` is on your `PATH` before starting Neovim.
 
 ```lua
 {
-  dir = "/home/au759518/Documents/Research/Repositories/dsrv-zed/nvim-extension",
+  dir = "/home/au759518/Documents/Research/Repositories/dsrv.nvim",
   ft = "dsrv",
   config = function()
     require("dsrv").setup({
@@ -55,7 +55,7 @@ Make sure `~/.local/bin` is on your `PATH` before starting Neovim.
 
 ```lua
 use {
-  "/home/au759518/Documents/Research/Repositories/dsrv-zed/nvim-extension",
+  "/home/au759518/Documents/Research/Repositories/dsrv.nvim",
   config = function()
     require("dsrv").setup()
   end,
@@ -66,7 +66,7 @@ use {
 
 ```sh
 mkdir -p ~/.local/share/nvim/site/pack/dsrv/start
-ln -s /home/au759518/Documents/Research/Repositories/dsrv-zed/nvim-extension \
+ln -s /home/au759518/Documents/Research/Repositories/dsrv.nvim \
   ~/.local/share/nvim/site/pack/dsrv/start/dsrv.nvim
 ```
 
