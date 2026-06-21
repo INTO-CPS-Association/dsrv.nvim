@@ -187,3 +187,7 @@ Useful commands:
 :lua vim.lsp.buf.hover()
 :lua vim.diagnostic.setqflist()
 ```
+
+## License
+
+This project is licensed under the INTO-CPS Association Public License (ICAPL). The selected usage mode is documented in `ICA-USAGE-MODE.txt`. See `LICENSE.md`.
