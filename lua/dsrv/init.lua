@@ -143,17 +143,42 @@ function M.register_treesitter_parser()
     return
   end
 
-  local parser_config = parsers.get_parser_configs()
   local parser_url = M.config.treesitter.parser_url or "https://github.com/INTO-CPS-Association/tree-sitter-dsrv.git"
-  parser_config.dsrv = parser_config.dsrv or {}
-  parser_config.dsrv.install_info = {
-    url = parser_url,
-    files = { "src/parser.c" },
-    branch = "main",
-    generate_requires_npm = false,
-    requires_generate_from_grammar = false,
-  }
-  parser_config.dsrv.filetype = "dsrv"
+
+  -- nvim-treesitter `master` (legacy API)
+  if type(parsers.get_parser_configs) == "function" then
+    local parser_config = parsers.get_parser_configs()
+    parser_config.dsrv = parser_config.dsrv or {}
+    parser_config.dsrv.install_info = {
+      url = parser_url,
+      files = { "src/parser.c" },
+      branch = "main",
+      generate_requires_npm = false,
+      requires_generate_from_grammar = false,
+    }
+    parser_config.dsrv.filetype = "dsrv"
+    return
+  end
+
+  -- nvim-treesitter `main`: parsers is a plain table that is rebuilt on reload,
+  -- so custom parsers are (re-)registered from the TSUpdate event.
+  local install_info = { branch = "main" }
+  local local_path = vim.fn.expand(parser_url)
+  if vim.fn.isdirectory(local_path) == 1 then
+    install_info = { path = local_path }
+  else
+    install_info.url = parser_url
+  end
+
+  local function register()
+    require("nvim-treesitter.parsers").dsrv = { install_info = install_info }
+  end
+  register()
+  vim.api.nvim_create_autocmd("User", {
+    group = vim.api.nvim_create_augroup("dsrv.nvim.treesitter", { clear = true }),
+    pattern = "TSUpdate",
+    callback = register,
+  })
 end
 
 function M.start_lsp(bufnr)

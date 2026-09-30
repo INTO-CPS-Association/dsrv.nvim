@@ -18,7 +18,7 @@ Neovim language support for DSRV, intended to mirror the core features of the DS
 
 - Neovim 0.10+ recommended
 - `dsrv-lsp` available on `PATH` for LSP features
-- Optional: [`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter) for tree-sitter highlighting
+- Optional: [`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter) for tree-sitter highlighting; the DSRV parser must then be installed once by hand (see [Tree-sitter setup](#tree-sitter-setup))
 - Optional: `trustworthiness_checker` available on `PATH` for run commands
 
 Install the LSP from its repository, or build it from source:
@@ -73,17 +73,23 @@ Then restart Neovim.
 
 ## Tree-sitter setup
 
-The plugin registers the DSRV parser with `nvim-treesitter` if `nvim-treesitter` is installed. By default it uses `https://github.com/INTO-CPS-Association/tree-sitter-dsrv.git`.
+Tree-sitter highlighting needs the DSRV parser, which is **not installed automatically**. Install it once, by hand:
 
-After installing the plugin, run:
+1. Install [`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter) and its requirements. Both of its branches are supported:
+   - `main` (its current default): requires Neovim 0.11+, a C compiler, and the [`tree-sitter` CLI](https://github.com/tree-sitter/tree-sitter/tree/master/crates/cli) (for example `cargo install tree-sitter-cli --locked`).
+   - `master` (legacy): requires a C compiler.
+2. Open any `*.dsrv` file. dsrv.nvim registers the `dsrv` parser with nvim-treesitter when it loads; if you lazy-load it with `ft = "dsrv"`, that only happens once a DSRV buffer is open, and `:TSInstall dsrv` fails before then.
+3. Run:
 
-```vim
-:TSInstall dsrv
-```
+   ```vim
+   :TSInstall dsrv
+   ```
 
-Then open `*.dsrv` files. The plugin also calls `vim.treesitter.start()` for DSRV buffers.
+4. Reload the buffer with `:edit`. The plugin starts tree-sitter highlighting for DSRV buffers, and later sessions highlight straight away.
 
-If tree-sitter is unavailable or the parser is not installed, Neovim falls back to `syntax/dsrv.vim`.
+The parser is built from `https://github.com/INTO-CPS-Association/tree-sitter-dsrv.git`. Run `:TSUpdate dsrv` to update it after grammar changes.
+
+Until the parser is installed, or if nvim-treesitter is not installed at all, Neovim uses the Vim syntax fallback in `syntax/dsrv.vim`.
 
 To use a local grammar checkout or fork instead of the default published grammar repository:
 
