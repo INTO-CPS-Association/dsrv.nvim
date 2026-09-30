@@ -1,18 +1,24 @@
-(line_comment) @comment
+[
+  (line_comment)
+  (block_comment)
+] @comment
 
 (string) @string
-(number) @number
+[
+  (number)
+  (integer)
+] @number
 (boolean) @boolean
 (builtin_type) @type.builtin
+
+(generic_type
+  constructor: ["List" "Map"] @type.builtin)
 
 (struct_type
   "Struct" @type.builtin)
 
-(generic_type
-  ["List" "Map"] @type.builtin)
-
-(generic_type
-  constructor: (identifier) @type)
+(dynamic_expression
+  kind: ["dynamic" "eval" "defer"] @function.builtin)
 
 [
   "in"
@@ -30,9 +36,10 @@
   "!"
   "=>"
   "=="
-  "!="
   "<="
   ">="
+  "<"
+  ">"
   "+"
   "-"
   "*"
@@ -40,10 +47,8 @@
   "%"
   "="
   "++"
+  "->"
 ] @operator
-
-(binary_expression
-  ["<" ">"] @operator)
 
 [
   "("
@@ -52,13 +57,11 @@
   "]"
   "{"
   "}"
+  "<"
+  ">"
 ] @punctuation.bracket
 
-(struct_type
-  ["<" ">"] @punctuation.bracket)
-
-(generic_type
-  ["<" ">"] @punctuation.bracket)
+(ellipsis) @punctuation.delimiter
 
 [
   ","
@@ -66,28 +69,29 @@
   "."
 ] @punctuation.delimiter
 
-(ellipsis) @punctuation.special
-
 ((identifier) @type.builtin
-  (#match? @type.builtin "^(Int|Float|Bool|Str|Unit|List|Map|Struct)$"))
+  (#match? @type.builtin "^(Int|Float|Bool|Str|Unit|Any)$"))
 
 ((identifier) @keyword
-  (#match? @keyword "^(dynamic|defer)$"))
+  (#match? @keyword "^(dynamic|eval|defer)$"))
 
 ((identifier) @function.builtin
-  (#match? @function.builtin "^(eval|update|default|is_defined|when|latch|init|monitored_at|dist|sin|cos|tan|abs)$"))
+  (#match? @function.builtin "^(update|default|is_defined|when|latch|init|fix|partial|sin|cos|tan|abs|monitored_at|dist)$"))
 
 (declaration
   name: (identifier) @variable)
 
-(struct_field_type
-  name: (identifier) @property)
+(assignment
+  left: (identifier) @variable)
+
+(variable_set
+  (identifier) @variable)
+
+(lambda_parameter
+  name: (identifier) @variable.parameter)
 
 (object_entry
   key: (identifier) @property)
-
-(assignment
-  left: (identifier) @variable)
 
 (call_expression
   function: (identifier) @function)
@@ -98,3 +102,7 @@
 
 (member_expression
   property: (identifier) @property)
+
+(call_expression
+  function: (identifier) @function.builtin
+  (#match? @function.builtin "^(List|Tuple|Map|Struct)$"))
