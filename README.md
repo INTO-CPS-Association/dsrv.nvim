@@ -87,7 +87,7 @@ Tree-sitter highlighting needs the DSRV parser, which is **not installed automat
 
 4. Reload the buffer with `:edit`. The plugin starts tree-sitter highlighting for DSRV buffers, and later sessions highlight straight away.
 
-The parser is built from `https://github.com/INTO-CPS-Association/tree-sitter-dsrv.git`. Run `:TSUpdate dsrv` to update it after grammar changes.
+The parser is built from `https://github.com/INTO-CPS-Association/tree-sitter-dsrv.git`. Run `:TSUpdate dsrv` to update it after grammar changes. The queries in `queries/dsrv` follow that grammar's `main` branch, so run `:TSUpdate dsrv` after updating dsrv.nvim too: an older parser lacks node types the queries use, and highlighting then fails to load.
 
 Until the parser is installed, or if nvim-treesitter is not installed at all, Neovim uses the Vim syntax fallback in `syntax/dsrv.vim`.
 
