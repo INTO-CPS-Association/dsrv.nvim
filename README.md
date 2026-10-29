@@ -119,7 +119,6 @@ require("dsrv").setup({
   },
   runner = {
     checker_cmd = "trustworthiness_checker",
-    parser = "lalr",
     language = "dsrv",
     default_input_extension = ".input",
     terminal_cmd = "botright split | terminal ",
@@ -159,13 +158,13 @@ require("dsrv").setup({
 The runner commands execute:
 
 ```sh
-trustworthiness_checker --parser lalr --language dsrv --semantics untimed --input-file INPUT MODEL
+trustworthiness_checker --language dsrv --semantics untimed --input-file INPUT MODEL
 ```
 
 or:
 
 ```sh
-trustworthiness_checker --parser lalr --language dsrv --semantics typed-untimed --input-file INPUT MODEL
+trustworthiness_checker --language dsrv --semantics typed-untimed --input-file INPUT MODEL
 ```
 
 ## LSP troubleshooting

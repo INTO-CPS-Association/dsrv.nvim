@@ -13,7 +13,6 @@ local defaults = {
   },
   runner = {
     checker_cmd = "trustworthiness_checker",
-    parser = "lalr",
     language = "dsrv",
     default_input_extension = ".input",
     terminal_cmd = "botright split | terminal ",
@@ -79,8 +78,6 @@ local function run_checker(model_file, input_file, semantics)
 
   local cmd = table.concat({
     shellescape(checker_exe),
-    "--parser",
-    shellescape(M.config.runner.parser),
     "--language",
     shellescape(M.config.runner.language),
     "--semantics",
